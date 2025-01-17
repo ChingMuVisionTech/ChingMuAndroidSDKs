@@ -1,0 +1,74 @@
+package com.example.native_vrpn;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.TextView;
+
+import com.example.native_vrpn.databinding.ActivityMainBinding;
+import com.example.native_vrpn.CMVrpnClient;
+public class MainActivity extends AppCompatActivity {
+
+    // Used to load the 'native_vrpn' library on application startup.
+    /*static {
+        System.loadLibrary("native_vrpn");
+    }*/
+    String callBackClassPath = "com/example/native_vrpn/MainActivity";
+    private ActivityMainBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        final String strServerInfo="MCServer@192.168.3.83";
+        // Example of a call to a native method
+        /*setCallBackClass(callBackClassPath);
+
+        TextView tv = binding.sampleText;
+        tv.setText(stringFromJNI());
+
+        startVRPNServer(strServerInfo);
+
+        runVRPNServerDataLoop();*/
+
+        CMVrpnClient.getInstance().init();
+        CMVrpnClient.getInstance().setCallBackClass(callBackClassPath);
+
+        CMVrpnClient.getInstance().startVRPNServer(strServerInfo);
+
+        CMVrpnClient.getInstance().runVRPNServerDataLoop();
+
+        int a = 0;
+    }
+    public void onVRPNClientPosDataCallBack(String sEventString) {
+     //   Log.i("tag", "onVRPNClientEventCallBack:" + sEventString);
+        String strEventString1 = sEventString;
+    }
+
+    public void onVRPNClientVelDataCallBack(String sEventString) {
+//        Log.i("tag", "onVRPNClientDataCallBack:" + sEventString);
+        String strEventString2 = sEventString;
+    }
+
+    public void onVRPNClientAccCallBack(String sEventString) {
+//        Log.i("tag", "onVRPNClientDataCallBack:" + sEventString);
+        String strEventString3 = sEventString;
+    }
+    /**
+     * A native method that is implemented by the 'native_vrpn' native library,
+     * which is packaged with this application.
+     */
+    /*public native String stringFromJNI();
+
+    public native String startVRPNServer(String serverInfo);
+
+    public native void setCallBackClass(String serverInfo);
+
+    public native void runVRPNServerDataLoop();
+
+    public native void stopVrpnServer();*/
+
+}
